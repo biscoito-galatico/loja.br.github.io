@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>@Mih_Estelar</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #f00;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .container {
+      display: flex;
+      max-width: 900px;
+      margin: 20px auto;
+      gap: 20px;
+      height: calc(100vh - 40px);
+    }
+
+    .left-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .header-left h1 {
+      margin: 0;
+      font-size: 3rem;
+      font-weight: 900;
+      text-shadow: 0 0 8px #ff0000cc;
+    }
+
+    .header-left p {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ff4444;
+      margin: 5px 0 0 0;
+      text-shadow: 0 0 8px #ff0000cc;
+    }
+
+    .buttons-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .buttons-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 20px;
+      background: #ff0000;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff0000;
+      transition: 0.3s;
+      white-space: nowrap;
+      min-width: 140px;
+      text-align: center;
+    }
+
+    .btn:hover {
+      background: #cc0000;
+    }
+
+    .btn.doacoes {
+      min-width: 190px;
+      padding: 12px 25px;
+      text-align: center;
+    }
+
+    .youtube-link {
+      text-decoration: none;
+      display: inline-block;
+      min-width: 140px;
+    }
+
+    .comment-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      background-color: #1e1e1e;
+      border: 1px solid #f00;
+      border-radius: 5px;
+      color: #f00;
+      resize: none;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .send-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #ff0000;
+      color: white;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      align-self: flex-start;
+      width: 100px;
+    }
+
+    .comment-section {
+      margin-top: 20px;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    .comment-section h2 {
+      margin-bottom: 10px;
+      color: #ff4444;
+    }
+
+    .comment {
+      background-color: #1e1e1e;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      word-break: break-word;
+    }
+
+    .comment-header {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-bottom: 5px;
+    }
+
+    .comment strong {
+      color: #f00;
+    }
+
+    .delete-btn {
+      margin-top: 10px;
+      background-color: #f00;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .right-panel {
+      width: 320px;
+      background-color: #1e1e1e;
+      border-radius: 10px;
+      padding: 20px;
+      box-sizing: border-box;
+      color: #ccc;
+      position: fixed;
+      right: 20px;
+      top: 80px;
+      height: calc(100vh - 100px);
+      overflow-y: auto;
+      box-shadow: -5px 0 10px rgba(255,0,0,0.5);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 100;
+    }
+
+    .right-panel.active {
+      transform: translateX(0);
+    }
+
+    .right-panel h2 {
+      color: #ff5555;
+      margin-top: 0;
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: #f00;
+      cursor: pointer;
+      float: right;
+      margin-top: -10px;
+      margin-right: -10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="left-panel">
+      <div class="header">
+        <div class="header-left">
+          <h1>@Mih_Estelar</h1>
+          <p>Inscritos: <span id="subscriberCount">109</span></p>
+        </div>
+
+        <div class="buttons-container">
+          <div class="buttons-row">
+            <button class="btn" data-panel="sobreCanal">Sobre o Canal</button>
+            <button class="btn" data-panel="curiosidades">Curiosidades</button>
+          </div>
+          <div class="buttons-row">
+            <button class="btn" data-panel="oriel">Oriel Estelar</button>
+            <a href="https://www.youtube.com/@Mih_Estelar" target="_blank" class="youtube-link">
+              <button class="btn">Ir para o YouTube</button>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="comment-box">
+        <textarea id="commentInput" rows="3" placeholder="Escreva seu comentário..."></textarea>
+        <button class="send-btn" onclick="addComment()">Enviar</button>
+
+        <div class="comment-section" id="commentSection">
+          <h2>Chat de Avaliações</h2>
+        </div>
+
+        <!-- Botão Doações abaixo do chat -->
+        <button class="btn doacoes" data-panel="doacoes" style="margin-top: 10px;">Doações para o Canal</button>
+      </div>
+    </div>
+
+    <div class="right-panel" id="rightPanel">
+      <button class="close-btn" id="closePanelBtn">&times;</button>
+      <div id="panelContent"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentUser = 'visitante'; // para testar, coloque 'starchefe' para poder excluir
+
+    function getFormattedDateTime() {
+      const now = new Date();
+      const date = now.toLocaleDateString();
+      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      return `${date} - ${time}`;
+    }
+
+    function saveComments(comments) {
+      localStorage.setItem('comentariosMihEstelar', JSON.stringify(comments));
+    }
+
+    function loadComments() {
+      const saved = localStorage.getItem('comentariosMihEstelar');
+      return saved ? JSON.parse(saved) : [];
+    }
+
+    function renderComments() {
+      const commentSection = document.getElementById('commentSection');
+      commentSection.innerHTML = '<h2>Chat de Avaliações</h2>';
+      const comments = loadComments();
+
+      comments.forEach((comment, index) => {
+        const commentDiv = document.createElement('div');
+        commentDiv.className = 'comment';
+
+        const header = document.createElement('div');
+        header.className = 'comment-header';
+        header.innerHTML = `<strong>${comment.user}</strong> comentou em ${comment.time}`;
+
+        const message = document.createElement('p');
+        message.textContent = comment.text;
+
+        commentDiv.appendChild(header);
+        commentDiv.appendChild(message);
+
+        if (currentUser.toLowerCase() === 'starchefe') {
+          const delBtn = document.createElement('button');
+          delBtn.textContent = "Excluir";
+          delBtn.className = "delete-btn";
+          delBtn.onclick = () => {
+            const updated = loadComments();
+            updated.splice(index, 1);
+            saveComments(updated);
+            renderComments();
+          };
+          commentDiv.appendChild(delBtn);
+        }
+
+        commentSection.appendChild(commentDiv);
+      });
+    }
+
+    function addComment() {
+      const input = document.getElementById('commentInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const newComment = {
+        user: currentUser,
+        time: getFormattedDateTime(),
+        text: text
+      };
+
+      const comments = loadComments();
+      comments.push(newComment);
+      saveComments(comments);
+      renderComments();
+
+      input.value = '';
+    }
+
+    const rightPanel = document.getElementById('rightPanel');
+    const panelContent = document.getElementById('panelContent');
+
+    const textosPainel = {
+      sobreCanal: `
+        <h2>Sobre o canal</h2>
+        <p>O primeiro vídeo do canal foi “Como conheci o Roblox?”, postado em 13 de fevereiro de 2025. O conteúdo principal envolve jogos, cultura otaku e o carisma autêntico de uma VTuber.</p>
+        <p>O canal foi criado para expressar opiniões, dar dicas de jogos e ser uma forma de expressão criativa da criadora, que nasceu em 17/07/2007 e já criou vários canais desde pequena.</p>
+      `,
+      curiosidades: `
+        <h2>Curiosidades</h2>
+        <p>O canal apresenta vídeos sobre jogos como Roblox, Minecraft e outros jogos, além de compartilhar experiências pessoais — como o vídeo “Como conheci o Roblox?” —, opiniões e dicas sobre games.</p>
+        <p>Incorpora elementos de VTuber com o uso de avatar virtual, incluindo vídeos curtos no TikTok, como "Respondendo comentários VTuber Oriel Estelar ✨️".</p>
+      `,
+      oriel: `
+        <h2>Sobre o personagem VTuber</h2>
+        <p>Com 12 anos, Oriel Estelar começou a roubar. Ele é um vampiro da nova era que vende relíquias mágicas roubadas, pois vampiros não são bem aceitos nos dias atuais.</p>
+        <p>Desde o nascimento, carrega uma marca no lado esquerdo do rosto — um sinal presente em todas as suas vidas passadas.</p>
+        <p>Com 17 anos e 1,70 m de altura, Oriel é míope e possui uma habilidade mágica única chamada <em>Ren’ai Hoshikuzu</em> (恋愛星屑), que significa "Poeira Estelar do Amor".</p>
+        <p>Ele pertence à antiga família Estelar, uma das famílias mais antigas que seguem a cultura das estrelas.</p>
+        <p>Desde pequeno, vê estrelas brilhando ao seu redor e escuta os sons belos das estrelas que caem dos céus.</p>
+      `,
+      doacoes: `
+        <h2>Doações para o Canal</h2>
+        <p>Ajude o canal a crescer! Você pode contribuir com qualquer valor via Pix.</p>
+        <p><strong>Chave Pix (CPF):</strong></p>
+        <p style="font-size: 1.2rem; color: #ff5555;">083550550945</p>
+        <p>Ou escaneie o QR Code abaixo:</p>
+        <img src="code.png" alt="QR Code Pix" style="width:200px; height:200px; border: 1px solid #ff0000;" />
+      `
+    };
+
+    document.querySelectorAll('.btn[data-panel]').forEach(button => {
+      button.addEventListener('click', () => {
+        const panelKey = button.getAttribute('data-panel');
+        panelContent.innerHTML = textosPainel[panelKey] || '<p>Conteúdo não encontrado.</p>';
+        rightPanel.classList.add('active');
+      });
+    });
+
+    document.getElementById('closePanelBtn').addEventListener('click', () => {
+      rightPanel.classList.remove('active');
+    });
+
+    window.onload = renderComments;
+  </script>
+
+</body>
+</html>
+
